@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="container">
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="col-md-4 d-flex align-items-center">
+      <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" aria-label="Bootstrap">
+        <svg class="bi" width="30" height="24" aria-hidden="true">
+          <use xlink:href="#bootstrap"></use>
+        </svg>
+      </a>
+      <span class="mb-3 mb-md-0 text-body-secondary">© 2025 Company, Inc</span>
+    </div>
+
+    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+      <li class="ms-3"><a class="text-body-secondary" href="#" aria-label="Instagram">
+        <svg class="bi" width="24" height="24" aria-hidden="true">
+          <use xlink:href="#instagram"></use>
+        </svg>
+      </a></li>
+      <li class="ms-3"><a class="text-body-secondary" href="#" aria-label="Facebook">
+        <svg class="bi" width="24" height="24">
+          <use xlink:href="#facebook"></use>
+        </svg>
+      </a></li>
+    </ul>
+  </footer>
+</div>
+
+<div class="modal fade" tabindex="-1" id="my-modal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- ellvis operator-->
+        <!--<h5 class="modal-title">[[${modalDto?.title}]]</h5>-->
+        <h5 class="modal-title" th:text="${modalDto?.title}">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" th:text="${modalDto?.content}">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" th:if="${toastDto?.isShow}">
+  <div id="my-toast" class="toast text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex justify-content-between align-items-center p-3">
+      <div class="toast-body">
+        <span th:text="${toastDto?.content}">장성호님 </span>
+      </div>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  //const myModal = document.querySelector("#my-modal");
+  const myModal = new bootstrap.Modal("#my-modal");
+  const isShow = /*[[${modalDto?.isShow}]]*/ false;
+  if(isShow) {
+    myModal.show();
+  }
+  //const isToastShow = /*[[${toastDto?.isShow}]]*/ false;
+  const toastEl = document.querySelector("#my-toast");
+  if(toastEl) {
+    const myToast = new bootstrap.Toast(toastEl, {delay: 3000});
+    //if (isToastShow) {
+      myToast.show();
+    //}
+  }
+</script>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+            </a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="../" class="nav-link px-2 link-secondary">Home</a></li>
+            <li><a href="../question/list?page=1" class="nav-link px-2">Board</a></li>
+            <li><a href="../faq/insert" class="nav-link px-2">FAQs</a></li>
+            <li><a href="#" class="nav-link px-2">About</a></li>
+        </ul>
+        <!-- 가짜 div-->
+        <th:block th:if="${session.loggedMemberDto == null}">
+            <div class="col-md-3 text-end">
+                <a href="../member/login" class="btn btn-outline-primary me-2">Login</a>
+                <a href="../member/signup" class="btn btn-primary">Sign-Up</a>
+            </div>
+        </th:block>
+        <th:block th:unless="${session.loggedMemberDto == null}">
+            <div class="col-md-3 text-end">
+                <a href="../member/info" th:href="@{/member/info/{userID}(userID = ${session.loggedMemberDto.userID})}" class="btn btn-outline-primary me-2">
+<!--                <a href="../member/info" th:href="@{|/member/info/${session.loggedMemberDto.userID}|}" class="btn btn-outline-primary me-2">-->
+<!--                <a href="../member/info" th:href="@{|/member/info?userID=${session.loggedMemberDto.userID}|}" class="btn btn-outline-primary me-2">-->
+                    <span th:text="${session.loggedMemberDto.userName}">장성호</span>
+                    <th:block th:if="${session.loggedMemberDto.renameProfile==null}">
+                        <img src="/images/user.png" >
+                    </th:block>
+                    <th:block th:unless="${session.loggedMemberDto.renameProfile==null}">
+                        <img src="/images/user.png" th:src="@{|/serverUpload/${session.loggedMemberDto.renameProfile}|} ">
+                    </th:block>
+                </a>
+                <a href="../member/logout" th:href="@{/member/logout}" class="btn btn-primary">logout</a>
+            </div>
+        </th:block>
+    </header>
+</div>
+
+</html>
+

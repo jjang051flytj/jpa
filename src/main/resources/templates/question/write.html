@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::myHead('WRITE')}"></head>
+
+<body>
+<header th:replace="~{fragments/header}"></header>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h2 class="my-5">WRITE</h2>  <!--mt-1~5 mb-1~5 my-1~5 -->
+            <form class="row g-3" action="../member/signup" method="post" name="signin" th:action="@{/question/write}">
+                <div class="col-12">
+                    <label for="title" class="form-label fw-bold">TITLE</label>
+                    <input type="text" class="form-control" id="title" placeholder="제목을 씁니다." name="title">
+                </div>
+                <div class="col-12">
+                    <label for="content" class="form-label fw-bold">CONTENT</label>
+                    <textarea type="text" class="form-control" id="content" placeholder="내용을 씁니다." name="content"></textarea>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary" id="btn-signin">WRITE</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+<footer th:replace="~{fragments/footer}"></footer>
+<script>
+    const btnDuplicate = document.querySelector("#btn-duplicate-id");
+    const userID = document.querySelector("#user-id");
+    const btnEmailSend = document.querySelector("#btn-email-send");
+    const emailConfirmContainer = document.querySelector("#email-confirm-container");
+    const email = document.querySelector("#email");
+    const emailConfirm = document.querySelector("#email-confirm");
+    const btnEmailConfirm = document.querySelector("#btn-email-confirm");
+    let confirmNumber = null;
+    btnEmailConfirm.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (confirmNumber === emailConfirm.value) {
+            alert("이메일 인증완료");
+            //toast로 바꿔보기
+        } else {
+            alert("이메일 인증해주세요")
+        }
+    })
+    btnEmailSend.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (email.value.trim() === "") {
+            alert("이메일을 확인해주세요.");
+            return;
+        }
+        emailConfirmContainer.style.display = "block";
+        const sendJson = {userEmail: email.value}; //자바스크립트 객체
+        fetch("/mail/email-confirm", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(sendJson)
+        })
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+                confirmNumber = json.confirmNumber;
+            })
+        //랜덤한 숫자 날아가게.....
+        //ajax
+    })
+
+
+    btnDuplicate.addEventListener("click", (e) => {
+        //query string get
+        e.preventDefault();
+        fetch("../member/id-check?userID=" + userID.value)
+            .then(response => response.json())
+            .then(json => {
+                if (json.count > 0) {
+                    alert("사용가능합니다.");
+                } else {
+                    alert("이미 사용중인 아이디입니다.");
+                }
+            });
+    })
+</script>
+</body>
+</html>

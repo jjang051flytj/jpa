@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::myHead('LIST')}"></head>
+
+<body>
+<header th:replace="~{fragments/header}"></header>
+<div class="container">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <h2 class="my-5">WRITE</h2>  <!--mt-1~5 mb-1~5 my-1~5 -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>NO</th>
+            <th>TITLE</th>
+            <th>WRITER</th>
+            <th>REGDATE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="item:${list}">
+            <td>1</td>
+            <td>
+              <!--<a href="" th:href="@{|/question/view/${item.id}|}">제목</a>-->
+              <a href="" th:href="@{/question/view/{id}(id=${item.id})}"
+                 th:text="${item.title}">제목</a>
+            </td>
+            <th th:text="${item.writer.userName}">WRITER</th>
+            <td th:text="${#temporals.format(item.regDate,'YYYY-MM-dd HH:mm')}">2025/04/22</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::myHead(LOGIN)}"></head>
+<body>
+<header th:replace="~{fragments/header}"></header>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+
+            <h2 class="my-5">LOGIN</h2>
+
+            <form class="row g-3"
+                  action="/member/login" method="post" name="login">
+                <div th:if="${error}" class="alert alert-danger">
+                    아이디 패스워드 확인해 주세요.
+                </div>
+                <div class="col-12">
+                    <label for="user-id" class="form-label fw-bold">USER ID</label>
+                    <input type="text" class="form-control" id="user-id"
+                           placeholder="USER ID" name="userID">
+                </div>
+                <div class="col-12">
+                    <label for="user-pw" class="form-label fw-bold">PASSWORD</label>
+                    <input type="password" class="form-control" id="user-pw" placeholder="PASSWORD" name="userPW">
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary" id="btn-signin">LOGIN</button>
+                    <a href="/mail/find-password" class="btn btn-primary">FIND PASSWORD</a>
+                </div>
+
+                <div class="col-12">
+                    <a href="/oauth2/authorization/google" class="btn btn-primary w-100">구글로그인</a>
+                </div>
+                <div class="col-12">
+                    <a href="/oauth2/authorization/kakao" class="btn btn-primary w-100">카카오로그인</a>
+                </div>
+                <div class="col-12">
+                    <a href="/oauth2/authorization/naver" class="btn btn-primary w-100"> 네이버로그인</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>
+

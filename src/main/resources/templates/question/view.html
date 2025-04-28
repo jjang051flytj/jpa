@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::myHead('WRITE')}"></head>
+
+<body>
+<header th:replace="~{fragments/header}"></header>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h2 class="my-5">VIEW</h2>  <!--mt-1~5 mb-1~5 my-1~5 -->
+            <div class="col-12">
+                <label for="title" class="form-label fw-bold">TITLE</label>
+                <input type="text" class="form-control" id="title" placeholder="제목을 씁니다." name="title"
+                       th:value="${questionDto.title}" readonly>
+            </div>
+            <div class="col-12 mt-5">
+                <label for="content" class="form-label fw-bold">CONTENT</label>
+                <textarea type="text" class="form-control" id="content"
+                          placeholder="내용을 씁니다." name="content" th:text="${questionDto.content}">
+
+          </textarea>
+            </div>
+            <div class="col-12 mt-5">
+                <button class="btn btn-primary" id="btn-signin">WRITE</button>
+                <a class="btn btn-primary" href="" th:href="@{/question/modify/{id}(id=${questionDto.id})}">MODIFY</a>
+            </div>
+            <div class="mt-5">
+                <form action="" th:action="@{|/comment/write/${questionDto.id}|}" method="post">
+                    <div class="row">
+                        <label for="comment" class="form-label fw-bold">CONTENT</label>
+                        <div class="col-9">
+                            <textarea type="text" class="form-control" id="comment" placeholder="댓글을 씁니다."
+                                      name="content"></textarea>
+                        </div>
+                        <div class="col-3">
+                            <button class="btn btn-primary" id="btn-comment">COMMENT</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div>
+                <ul id="comment-list">
+                    <th:block th:each="item:${questionDto.commentList}">
+                        <li class="mb-2">
+
+                            <div th:text="${item.content}">내용 들어가는 곳</div>
+                            <div>
+                                <button class="btn btn-sm btn-primary btn-del"
+                                        th:data-id="${item.id}">DEL
+                                </button>
+                            </div>
+                        </li>
+                    </th:block>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-2"></div>
+    </div>
+</div>
+<footer th:replace="~{fragments/footer}"></footer>
+
+<script th:inline="javascript">
+
+    const btnComment = document.querySelector("#btn-comment");
+    const comment = document.querySelector("#comment");
+    const commentList = document.querySelector("#comment-list");
+    const sendURL = /*[[|/comment/write-ajax/${questionDto.id}|]]*/  "/comment/write-ajax/1";
+    btnComment.addEventListener("click", (e) => {
+        e.preventDefault();
+        const sendData = {content: comment.value};
+        fetch(sendURL, {
+            method: "post",
+            headers: {"Content-Type": "application/json;charset=UTF-8"},
+            body: JSON.stringify(sendData)
+        })
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+                commentList.innerHTML += `<li class="d-flex justify-content-between mb-2">
+                    <span>${json.comment.content}</span>
+                    <div><button class="btn btn-sm btn-primary btn-del">DEL</button></div>
+                    </li>`
+            })
+    });
+    // 이벤트 위임....
+    //data-id
+    commentList.addEventListener("click", (e) => {
+        //
+        //console.log(e.currentTarget)
+        //console.log(e.target);
+        const btn = e.target.closest("button");
+        if (btn.classList.contains("btn-del")) {
+            //얘가 우리가 누른 버튼이 된다.
+
+            const id = btn.dataset.id;
+            console.log("버튼 클릭 " + id);
+            //여기 눌렀을때 ajax
+            fetch("/comment/delete/" + id, {
+                method: "delete"
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.isCommentDelete) {
+                        btn.parentNode.parentNode.remove();
+                    }
+                })
+        }
+    })
+
+</script>
+</body>
+</html>
