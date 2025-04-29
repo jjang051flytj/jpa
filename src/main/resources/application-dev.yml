@@ -1,0 +1,52 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: springjjang052
+    password: 1234
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1093062006674-39710l6ui03hrd40r0fsql4ml4dh6141.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+          kakao:
+            client-id: 61361a4841bdb45ab98cb00f2445e777
+            client-secret: sjrkXjX2NcnXoPQW2iFBQmhNcOjetm0j
+            scope:
+              - profile_nickname
+              - profile_image
+              - account_email
+            client-name: kakao
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            client-authentication-method: client_secret_post
+
+          naver:
+            client-id: AlhmG4TQ5fsqEs3WwPbM
+            client-secret: 8Qx8_xFM3R
+            scope:
+              - name
+              - profile_image
+              - email
+            client-name: naver
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+            client-authentication-method: client_secret_post
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+          naver:
+            authorization-uri: https://nid.naver.com/oauth2.0/authorize
+            token-uri: https://nid.naver.com/oauth2.0/token
+            user-info-uri: https://openapi.naver.com/v1/nid/me
+            user-name-attribute: response
